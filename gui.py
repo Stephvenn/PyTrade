@@ -84,7 +84,7 @@ class Window:
 class Table:
     def __init__(self, root, data):
         for i in range(len(data)):
-            for j in range(len(data[0])):
+            for j in range(5):
                 self.entry = Entry(root, width=10, fg='white')
                 self.entry.grid(row=i, column=j)
                 self.entry.insert(END, str(data[i][j]))
