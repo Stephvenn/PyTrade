@@ -1,26 +1,30 @@
 from tkinter import *
 
-# text is changed upon button click
-def onclick():
-    text.configure(text=input.get())
+class Window:
+    def __init__(self, master):
 
-# initializing window
-root = Tk()
-root.title('PyTrade')
-root.geometry('500x400')
+        self.master = master
+        self.master.title('PyTrade')
+        self.master.geometry('400x500')
 
-# button
-button = Button(root, text="Enter", fg="black", command=onclick)
-button.grid(column=1, row=1)
+        # button
+        self.button = Button(self.master, text="Enter", fg="black", command=self.onclick)
+        self.button.bind('<Return>', self.onclick)
+        self.button.pack()
+        
+        # text box
+        self.input = Entry(self.master, width=20)
+        self.input.pack()
 
-# text box
-input = Entry(root, width=20)
-input.grid(column=1, row=3)
+        # text
+        self.text = Label(self.master, text="")
+        self.text.pack()
 
-# text
-text = Label(text="")
-text.grid(column=1, row=4)
+    def onclick(self):
+        self.text.configure(text=self.input.get())
+
+x = Tk()
+window = Window(x)
+x.mainloop()
 
 
-# runs window
-root.mainloop()
