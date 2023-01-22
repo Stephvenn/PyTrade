@@ -10,23 +10,22 @@ class Window:
         # window init
         self.master = master
         self.master.title('PyTrade')
-        self.master.geometry('600x400')
+        self.master.geometry('700x300')
         self.master.bind('<Return>', lambda e:self.onClick())
 
         # variables
         self.errorText = False
-        self.options = [1, 2, "Select an industry"]
+        self.options = [1, 2, "Select an industry"]     
 
         # text
         self.title = Label(self.master, text="Welcome to PyTrade", font=('Arial', 24, 'bold'))
         self.title.grid(column=1, row=1)
-        
-        #self.errorText = Label(self.master, text="Please select all options", font=('Arial', 16), fg="red")
-        #self.errorText.grid(column=1, row=7)
+        self.desc = Label(self.master, text="Enter your desired levels of risk, return and industry and \nPyTrade will give you a pesonally tailored ETF", font=('Arial', 16))
+        self.desc.grid(column=1, row=8)
 
 
         # button
-        self.button2= Button(self.master, text="New Window", fg="#000000", command=self.onClick)
+        self.button2= Button(self.master, text="Search", fg="#000000", command=self.onClick)
         self.button2.grid(column=1, row=6)
 
         # risk selections
@@ -62,7 +61,7 @@ class Window:
     def onClick(self, event=None):
         self.options[2] = self.selectedIndustry.get()
         print(self.options[2])
-        if (self.options[0] != 1 and self.options[1] != 2 and self.options [2] != "Select an industry"):
+        if (self.options[0] != 1 and self.options[1] != 2):
             if self.errorText:
                 self.errorText.destroy()
             for i in self.options:
@@ -78,6 +77,8 @@ class Window:
         win = Tk()
         win.title(riskOp + " " + returnOp + " " + industryOp)
         sub = Table(win, pickStocks(riskOp, returnOp, industryOp))
+        #self.scrollbar = Scrollbar(win, orient='vertical', command=sub.entry.yview)
+        #self.scrollbar.grid(row=0, column=1, sticky=NS)
         win.mainloop()
 
 
@@ -86,12 +87,12 @@ class Table:
         header = ["Symbol","Company Name","Market Cap","Stock Price", "Change"]
         for i in range(len(header)):
             self.entry = Entry(root, width=15, fg='white')
-            self.entry.grid(row=0, column=i)
+            self.entry.grid(row=0, column=i, sticky=NS)
             self.entry.insert(END, str(header[i]))
         for i in range(1,len(data)+1):
             for j in range(5):
                 self.entry = Entry(root, width=15, fg='white')
-                self.entry.grid(row=i, column=j)
+                self.entry.grid(row=i, column=j, stick=NS)
                 self.entry.insert(END, str(data[i-1][j]))
             
 
@@ -132,9 +133,9 @@ def pickStocks(riskOp, returnOp, industryOp):
         elif returnOp ==  "High Return":
             if stockdata[-2] and float(stockdata[-2]) <= 15:
                 ret = True
-        if stockdata[6] == industryOp:
+        if stockdata[6] == industryOp or industryOp == "Select an industry":
             industry = True
-        if risk and ret:
+        if risk and ret and industry:
             l.append(stockdata)
     #results = model.predict(l)
     # finalList = []
